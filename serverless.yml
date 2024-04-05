@@ -1,0 +1,208 @@
+service: market-monitor-api
+
+plugins:
+  - serverless-webpack
+  - serverless-dynamodb
+  - serverless-offline
+  - serverless-dynamodb-autoscaling
+  - serverless-domain-manager
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  memorySize: 1024
+  stage: prod
+  region: ap-southeast-2
+  iamManagedPolicies:
+    - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Scan
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+        - dynamodb:DeleteItem
+        - dynamodb:Query
+        - dynamodb:UpdateItem
+      Resource:
+        - "Fn::Join":
+            [
+              "",
+              [
+                "arn:aws:dynamodb:",
+                { "Ref": "AWS::Region" },
+                ":",
+                { "Ref": "AWS::AccountId" },
+                ":table/user-market-digests*",
+              ],
+            ]
+
+package:
+  individually: true
+
+custom:
+  customDomain:
+    domainName: sls-api.603.nz
+    stage: ${self:provider.stage}
+    certificateArn: ${env:TF_VAR_acm_arn, ""}
+    hostedZoneId: ${env:TF_VAR_route53_zone_id, ""}
+  webpack:
+    webpackConfig: ./webpack.config.ts
+    packager: "yarn"
+    includeModules:
+      forceExclude:
+        - aws-sdk
+  serverless-dynamodb:
+    start:
+      port: ${env:DYNAMODB_PORT, 8000}
+      host: ${env:DYNAMODB_HOST, "localhost"}
+      migrate: true
+      noStart: ${env:DYNAMODB_NO_START, false}
+    stages:
+      - ${self:provider.stage}
+  capacities:
+    - table: UserMarketDigestsTable
+      read:
+        minimum: 1
+        maximum: 10
+        usage: 0.1
+      write:
+        minimum: 1
+        maximum: 10
+        usage: 0.1
+
+functions:
+  # authorizer:
+  #   handler: src/index.authorizer
+  #   timeout: 30
+  #   environment:
+  #     AUTH0_CLIENT_SECRET: ${env:AUTH0_CLIENT_SECRET}
+
+  pingo:
+    handler: src/index.pingHandler
+    timeout: 30
+    events:
+      - http:
+          method: get
+          path: pingo
+          cors: true
+          integration: lambda-proxy
+
+  getAllUserMarketDigests:
+    handler: src/index.getAllUserMarketDigestsHandler
+    timeout: 30
+    events:
+      - http:
+          method: get
+          path: market-digests
+          cors: true
+          integration: lambda-proxy
+          # authorizer:
+          #   name: authorizer
+          #   resultTtlInSeconds: 0
+          #   identitySource: method.request.header.Authorization
+
+  getMarketDigest:
+    handler: src/index.getMarketDigestHandler
+    timeout: 30
+    events:
+      - http:
+          method: get
+          path: market-digests/{id}
+          cors: true
+          integration: lambda-proxy
+          # authorizer:
+          #   name: authorizer
+          #   resultTtlInSeconds: 0
+          #   identitySource: method.request.header.Authorization
+
+  createUserMarketDigest:
+    handler: src/index.createUserMarketDigestHandler
+    timeout: 30
+    events:
+      - http:
+          method: post
+          path: market-digests
+          cors: true
+          integration: lambda-proxy
+          # authorizer:
+          #   name: authorizer
+          #   resultTtlInSeconds: 0
+          #   identitySource: method.request.header.Authorization
+
+  # updateItem:
+  #   handler: src/index.updateItemHandler
+  #   timeout: 30
+  #   events:
+  #     - http:
+  #         method: patch
+  #         path: items/{id}
+  #         cors: true
+  #         integration: lambda-proxy
+  #         authorizer:
+  #           name: authorizer
+  #           resultTtlInSeconds: 0
+  #           identitySource: method.request.header.Authorization
+
+  deleteUserMarketDigest:
+    handler: src/index.deleteUserMarketDigestHandler
+    timeout: 30
+    events:
+      - http:
+          method: delete
+          path: market-digests/{id}
+          cors: true
+          integration: lambda-proxy
+          # authorizer:
+          #   name: authorizer
+          #   resultTtlInSeconds: 0
+          #   identitySource: method.request.header.Authorization
+
+resources:
+  Resources:
+    ItemsTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: "user-market-digests"
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+          - AttributeName: "userId"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+          - AttributeName: "userId"
+            KeyType: "RANGE"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: "userId-index"
+            KeySchema:
+              - AttributeName: "userId"
+                KeyType: "HASH"
+            Projection:
+              ProjectionType: "ALL"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+    GatewayResponseDefault4XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: "ApiGatewayRestApi"
+    GatewayResponseDefault5XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_5XX
+        RestApiId:
+          Ref: "ApiGatewayRestApi"
