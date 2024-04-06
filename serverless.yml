@@ -166,26 +166,12 @@ resources:
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"
-          - AttributeName: "userId"
-            AttributeType: "S"
         KeySchema:
           - AttributeName: "id"
             KeyType: "HASH"
-          - AttributeName: "userId"
-            KeyType: "RANGE"
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        GlobalSecondaryIndexes:
-          - IndexName: "userId-index"
-            KeySchema:
-              - AttributeName: "userId"
-                KeyType: "HASH"
-            Projection:
-              ProjectionType: "ALL"
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
     GatewayResponseDefault4XX:
       Type: "AWS::ApiGateway::GatewayResponse"
       Properties:
