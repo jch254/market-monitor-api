@@ -25,6 +25,7 @@ provider:
         - dynamodb:DeleteItem
         - dynamodb:Query
         - dynamodb:UpdateItem
+        - events:PutRule
       Resource:
         - "Fn::Join":
             [
