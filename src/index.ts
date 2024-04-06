@@ -16,7 +16,7 @@ import Response from "./Response";
 import ResponseError from "./ResponseError";
 
 export async function pingHandler(event: APIGatewayEvent, context: Context) {
-  console.log("pingHandler");
+  console.log("pingoHandler");
   console.log("event", JSON.stringify(event));
   console.log("context", JSON.stringify(context));
 
