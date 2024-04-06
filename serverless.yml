@@ -50,9 +50,7 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.ts
     packager: "yarn"
-    # includeModules:
-    #   forceExclude:
-    #     - aws-sdk
+    includeModules: true
   serverless-dynamodb:
     start:
       port: ${env:DYNAMODB_PORT, 8000}
