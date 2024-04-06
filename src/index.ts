@@ -14,6 +14,7 @@ import {
 } from "./database";
 import Response from "./Response";
 import ResponseError from "./ResponseError";
+import { createCloudWatchEventSchedule } from "./scheduler";
 
 export async function pingHandler(event: APIGatewayEvent, context: Context) {
   console.log("pingoHandler");
@@ -126,6 +127,13 @@ export async function createUserMarketDigestHandler(
     const { discogsUsername, shipsFrom, destinationEmail } = JSON.parse(
       event.body as string
     );
+
+    await createCloudWatchEventSchedule(
+      discogsUsername,
+      shipsFrom,
+      destinationEmail
+    );
+
     const item = await createUserMarketDigest(
       discogsUsername,
       shipsFrom,

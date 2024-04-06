@@ -17,6 +17,7 @@ env:
     TF_VAR_acm_arn: "arn:aws:acm:us-east-1:982898479788:certificate/65811194-cc89-4926-83c3-199c5c0b6e0c"
     TF_VAR_build_compute_type: "BUILD_GENERAL1_MEDIUM"
     REMOTE_STATE_BUCKET: "603-terraform-remote-state"
+    MARKET_MONITOR_LAMBDA_FUNCTION_ARN: "arn:aws:lambda:ap-southeast-2:982898479788:function:discogs-market-monitor-prod-handler"
   # parameter-store:
   #   AUTH0_CLIENT_SECRET: "/market-monitor-api/auth0-client-secret"
 

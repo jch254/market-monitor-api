@@ -118,6 +118,8 @@ functions:
   createUserMarketDigest:
     handler: src/index.createUserMarketDigestHandler
     timeout: 30
+    environment:
+      MARKET_MONITOR_LAMBDA_FUNCTION_ARN: ${env:MARKET_MONITOR_LAMBDA_FUNCTION_ARN}
     events:
       - http:
           method: post
