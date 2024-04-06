@@ -25,7 +25,6 @@ provider:
         - dynamodb:DeleteItem
         - dynamodb:Query
         - dynamodb:UpdateItem
-        - events:PutRule
       Resource:
         - "Fn::Join":
             [
@@ -38,6 +37,11 @@ provider:
                 ":table/user-market-digestz*",
               ],
             ]
+    - Effect: Allow
+      Action:
+        - events:PutRule
+        - events:PutTargets
+      Resource: "*"
 
 package:
   individually: true
