@@ -161,7 +161,7 @@ functions:
 
 resources:
   Resources:
-    ItemsTable:
+    UserMarketDigestsTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
         TableName: "user-market-digests"
