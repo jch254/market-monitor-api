@@ -1,6 +1,6 @@
-# [Market-monitor-api](TBC)
+# [Market-monitor-api](https://market-monitor.603.nz/pingo)
 
-![Build Status](TBC)
+![Build Status](https://codebuild.ap-southeast-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoieDBLRm92M01yMmQxT3JuOEtsNDlPRjVjR3c3T2FIaFpDTDVkVzdFVWFQUWVpYXBscUVvQ0NCYTdQd3I0cXVVVzZKd3BNZnpERWQ5QklxdE9POUJNU1BrPSIsIml2UGFyYW1ldGVyU3BlYyI6IlZrcHdzU0JrZk1rd1VmdUQiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main)
 
 API powered by Serverless, TypeScript, Webpack, Node.js and DynamoDB to power the [Discogs Market Monitor] UI (https://github.com/jch254/discogs-market-monitor).
 
