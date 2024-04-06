@@ -25,7 +25,7 @@ module.exports = {
     extensions: ['.ts', '.js', '.json'],
     modules: [srcPath, nodeModulesPath],
   },
-  externals: ['aws-sdk', nodeExternals()],
+  externals: [nodeExternals()],
   module: {
     rules: [
       {
