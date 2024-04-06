@@ -34,7 +34,7 @@ provider:
                 { "Ref": "AWS::Region" },
                 ":",
                 { "Ref": "AWS::AccountId" },
-                ":table/user-market-digests*",
+                ":table/user-market-digestz*",
               ],
             ]
 
@@ -162,7 +162,7 @@ resources:
     UserMarketDigestsTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
-        TableName: "user-market-digests"
+        TableName: "user-market-digestz"
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"

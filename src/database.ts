@@ -17,7 +17,7 @@ const db = process.env.IS_OFFLINE
 
 export async function getUserMarketDigests(): Promise<UserMarketDigest[]> {
   const params = {
-    TableName: "user-market-digests",
+    TableName: "user-market-digestz",
   };
 
   const data = await db.scan(params).promise();
@@ -29,7 +29,7 @@ export async function getUserMarketDigestById(
   userMarketDigestId: string
 ): Promise<UserMarketDigest> {
   const params = {
-    TableName: "user-market-digests",
+    TableName: "user-market-digestz",
     Key: {
       id: userMarketDigestId,
     },
@@ -53,7 +53,7 @@ export async function createUserMarketDigest(
   destinationEmail: string
 ): Promise<UserMarketDigest> {
   const params = {
-    TableName: "user-market-digests",
+    TableName: "user-market-digestz",
     ConditionExpression: "attribute_not_exists(id)",
     Item: {
       id: v4(),
@@ -76,7 +76,7 @@ export async function deleteUserMarketDigest(
 ): Promise<void> {
   try {
     const params = {
-      TableName: "user-market-digests",
+      TableName: "user-market-digestz",
       ConditionExpression: "attribute_exists(id)",
       Key: {
         id: userMarketDigestId,
