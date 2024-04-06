@@ -20,7 +20,7 @@ export async function getUserMarketDigests(): Promise<UserMarketDigest[]> {
     TableName: "user-market-digests",
   };
 
-  const data = await db.query(params).promise();
+  const data = await db.scan(params).promise();
 
   return data.Items as UserMarketDigest[];
 }
