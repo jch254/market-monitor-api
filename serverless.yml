@@ -39,8 +39,10 @@ provider:
             ]
     - Effect: Allow
       Action:
+        - events:DeleteRule
         - events:PutRule
         - events:PutTargets
+        - events:RemoveTargets
         - lambda:AddPermission
         - lambda:RemovePermission
         - lambda:GetPolicy
