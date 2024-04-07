@@ -22,7 +22,7 @@ Serverless-dynamodb-local requires Java Runtime Engine (JRE) version 6.x or newe
 
 **All required environment variables above must be set before `yarn run dev` command below. Optional DYNAMODB_PORT and DYNAMODB_HOST environment variables may be set to override the defaults (localhost:8000).**
 
-E.g. `VALID_API_TOKENS=YOUR_COMMA_SEPARATED_TOKENS yarn run dev`
+E.g. `VALID_API_TOKENS=YOUR_COMMA_SEPARATED_TOKENS SENDGRID_API_KEY=YOUR_API_KEY SENDER_EMAIL=sendgrid@youremail.com yarn run dev`
 
 ```
 yarn install (serverless dynamodb install included as postinstall script)
@@ -37,9 +37,9 @@ Maintaining a Java installation for the sake of running DynamoDB locally is a pa
 
 To start the local servers that mimic AWS API Gateway and DyanamoDB using docker, run the commands below.
 
-**VALID_API_TOKENS environment variable must be set before `docker-compose up --build` command below.**
+**All required environment variables above must be set before `docker-compose up --build` command below.**
 
-E.g. `VALID_API_TOKENS=YOUR_COMMA_SEPARATED_TOKENS docker-compose up --build`
+E.g. `VALID_API_TOKENS=YOUR_COMMA_SEPARATED_TOKENS SENDGRID_API_KEY=YOUR_API_KEY SENDER_EMAIL=sendgrid@youremail.com docker-compose up --build`
 
 ```
 docker-compose up --build

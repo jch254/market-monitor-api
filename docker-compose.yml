@@ -30,6 +30,8 @@ services:
       retries: 5
     environment:
       VALID_API_TOKENS: ${VALID_API_TOKENS}
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+      SENDER_EMAIL: ${SENDER_EMAIL}
       DYNAMODB_HOST: dynamodb
       DYNAMODB_PORT: 8000
       DYNAMODB_NO_START: "true"
