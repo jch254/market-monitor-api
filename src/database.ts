@@ -54,8 +54,7 @@ export async function createUserMarketDigest(
 ): Promise<UserMarketDigest> {
   const params = {
     TableName: "user-market-digestz",
-    ConditionExpression:
-      "attribute_not_exists(id) OR attribute_not_exists(discogsUsername)",
+    ConditionExpression: "attribute_not_exists(id)",
     Item: {
       id: v4(),
       discogsUsername,
@@ -78,13 +77,16 @@ export async function deleteUserMarketDigest(
   try {
     const params = {
       TableName: "user-market-digestz",
-      ConditionExpression: "attribute_exists(id)",
+      UpdateExpression: "SET deletedAtUtc = :deletedAtUtc",
+      ExpressionAttributeValues: {
+        ":deletedAtUtc": moment().utc().toISOString(),
+      },
       Key: {
         id: userMarketDigestId,
       },
     };
 
-    await db.delete(params).promise();
+    await db.update(params).promise();
   } catch (err: any) {
     if (err.code === "ConditionalCheckFailedException") {
       throw new ResponseError({
