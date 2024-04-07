@@ -1,4 +1,4 @@
-import { CloudWatchEvents } from "aws-sdk";
+import { CloudWatchEvents, Lambda } from "aws-sdk";
 
 const cw = new CloudWatchEvents();
 
@@ -14,7 +14,7 @@ export const createCloudWatchEventSchedule = async (
     Description: `Discogs Market Monitor Event Rule for ${discogsUsername}`,
   };
 
-  await cw.putRule(params).promise();
+  const { RuleArn } = await cw.putRule(params).promise();
 
   const targetParams = {
     Rule: `MarketMonitor-${discogsUsername}`,
@@ -28,4 +28,16 @@ export const createCloudWatchEventSchedule = async (
   };
 
   await cw.putTargets(targetParams).promise();
+
+  const lambda = new Lambda();
+
+  const addPermissionParams = {
+    Action: "lambda:InvokeFunction",
+    FunctionName: process.env.MARKET_MONITOR_LAMBDA_FUNCTION_ARN || "",
+    Principal: "events.amazonaws.com",
+    StatementId: `MarketMonitor-${discogsUsername}`,
+    SourceArn: RuleArn,
+  };
+
+  await lambda.addPermission(addPermissionParams).promise();
 };

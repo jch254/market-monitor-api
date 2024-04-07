@@ -43,10 +43,13 @@ export const authorizer = (
     const authHeader = event.authorizationToken?.split(" ") || [];
 
     if (authHeader.length === 2 && authHeader[0].toLowerCase() === "bearer") {
-      const decoded = jwt.verify(
-        authHeader[1],
-        process.env.AUTH0_CLIENT_SECRET as string
-      ) as { sub: string };
+      const validTokens = (process.env.VALID_API_TOKENS || "").split(",");
+
+      const token = authHeader[1];
+
+      if (!validTokens.includes(token)) {
+        throw new Error("Invalid token");
+      }
 
       const authResponse: AuthResponse = {
         policyDocument: {
@@ -59,7 +62,7 @@ export const authorizer = (
             },
           ],
         },
-        principalId: decoded.sub,
+        principalId: "user",
       };
 
       callback(undefined, authResponse);

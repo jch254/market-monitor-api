@@ -76,11 +76,11 @@ custom:
         usage: 0.1
 
 functions:
-  # authorizer:
-  #   handler: src/index.authorizer
-  #   timeout: 30
-  #   environment:
-  #     AUTH0_CLIENT_SECRET: ${env:AUTH0_CLIENT_SECRET}
+  authorizer:
+    handler: src/index.authorizer
+    timeout: 30
+    environment:
+      VALID_API_TOKENS: ${env:VALID_API_TOKENS}
 
   pingo:
     handler: src/index.pingHandler
@@ -101,10 +101,10 @@ functions:
           path: market-digests
           cors: true
           integration: lambda-proxy
-          # authorizer:
-          #   name: authorizer
-          #   resultTtlInSeconds: 0
-          #   identitySource: method.request.header.Authorization
+          authorizer:
+            name: authorizer
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
 
   getMarketDigest:
     handler: src/index.getMarketDigestHandler
@@ -115,10 +115,10 @@ functions:
           path: market-digests/{id}
           cors: true
           integration: lambda-proxy
-          # authorizer:
-          #   name: authorizer
-          #   resultTtlInSeconds: 0
-          #   identitySource: method.request.header.Authorization
+          authorizer:
+            name: authorizer
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
 
   createUserMarketDigest:
     handler: src/index.createUserMarketDigestHandler
@@ -131,10 +131,10 @@ functions:
           path: market-digests
           cors: true
           integration: lambda-proxy
-          # authorizer:
-          #   name: authorizer
-          #   resultTtlInSeconds: 0
-          #   identitySource: method.request.header.Authorization
+          authorizer:
+            name: authorizer
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
 
   # updateItem:
   #   handler: src/index.updateItemHandler
@@ -159,10 +159,10 @@ functions:
           path: market-digests/{id}
           cors: true
           integration: lambda-proxy
-          # authorizer:
-          #   name: authorizer
-          #   resultTtlInSeconds: 0
-          #   identitySource: method.request.header.Authorization
+          authorizer:
+            name: authorizer
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
 
 resources:
   Resources:
