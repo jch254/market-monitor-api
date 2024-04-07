@@ -16,7 +16,7 @@ export const sendWelcomeEmail = async (
   const msg: sgMail.MailDataRequired = {
     to: destinationEmail,
     from: process.env.SENDER_EMAIL || "",
-    subject: `Discogs Wantlist Digest for ${username} set up`,
+    subject: `Discogs Wantlist Digest for ${username} successfully fired up`,
     text: `Your Discogs Wantlist Digest for ${username} has been successfully set up. You will receive a daily email with new items from the following locations: ${shipsFromList}.`,
   };
 
