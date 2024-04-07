@@ -13,7 +13,10 @@ import {
 } from "./database";
 import Response from "./Response";
 import ResponseError from "./ResponseError";
-import { createCloudWatchEventSchedule } from "./scheduler";
+import {
+  createCloudWatchEventSchedule,
+  deleteCloudWatchEventSchedule,
+} from "./scheduler";
 
 export async function pingHandler(event: APIGatewayEvent, context: Context) {
   console.log("pingoHandler");
@@ -104,9 +107,15 @@ export async function getMarketDigestHandler(
   console.log("context", JSON.stringify(context));
 
   try {
-    const item = await getUserMarketDigestById(event.pathParameters?.id || "");
+    const userMarketDigest = await getUserMarketDigestById(
+      event.pathParameters?.id || ""
+    );
 
-    return new Response({ statusCode: 200, body: item });
+    if (!userMarketDigest) {
+      throw new ResponseError({ message: "Not found", statusCode: 404 });
+    }
+
+    return new Response({ statusCode: 200, body: userMarketDigest });
   } catch (err: any) {
     console.log(err);
 
@@ -136,13 +145,13 @@ export async function createUserMarketDigestHandler(
       destinationEmail
     );
 
-    const item = await createUserMarketDigest(
+    const userMarketDigest = await createUserMarketDigest(
       discogsUsername,
       shipsFrom,
       destinationEmail
     );
 
-    return new Response({ statusCode: 201, body: item });
+    return new Response({ statusCode: 201, body: userMarketDigest });
   } catch (err: any) {
     console.log(err);
 
@@ -163,6 +172,15 @@ export async function deleteUserMarketDigestHandler(
   console.log("context", JSON.stringify(context));
 
   try {
+    const userMarketDigest = await getUserMarketDigestById(
+      event.pathParameters?.id || ""
+    );
+
+    if (!userMarketDigest) {
+      throw new ResponseError({ message: "Not found", statusCode: 404 });
+    }
+
+    await deleteCloudWatchEventSchedule(userMarketDigest.discogsUsername);
     await deleteUserMarketDigest(event.pathParameters?.id || "");
 
     return new Response({ statusCode: 200 });
