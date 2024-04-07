@@ -1,6 +1,7 @@
 import { CloudWatchEvents, Lambda } from "aws-sdk";
 
 const cw = new CloudWatchEvents();
+const lambda = new Lambda();
 
 export const createCloudWatchEventSchedule = async (
   discogsUsername: string,
@@ -28,18 +29,43 @@ export const createCloudWatchEventSchedule = async (
   };
 
   await cw.putTargets(targetParams).promise();
+  await addLambdaPermission(discogsUsername, RuleArn);
+};
 
-  const lambda = new Lambda();
-
+const addLambdaPermission = async (
+  discogsUsername: string,
+  sourceArn?: string
+) => {
   const addPermissionParams = {
     Action: "lambda:InvokeFunction",
     FunctionName: process.env.MARKET_MONITOR_LAMBDA_FUNCTION_ARN || "",
     Principal: "events.amazonaws.com",
     StatementId: `MarketMonitor-${discogsUsername}`,
-    SourceArn: RuleArn,
+    SourceArn: sourceArn,
   };
 
-  await lambda.addPermission(addPermissionParams).promise();
+  try {
+    const { Policy } = await lambda
+      .getPolicy({ FunctionName: addPermissionParams.FunctionName })
+      .promise();
+
+    const policyDocument = JSON.parse(Policy || "");
+
+    const permissionExists = policyDocument.Statement.some(
+      (statement: { Sid?: string }) =>
+        statement.Sid === addPermissionParams.StatementId
+    );
+
+    if (!permissionExists) {
+      await lambda.addPermission(addPermissionParams).promise();
+    }
+  } catch (err: any) {
+    if (err.code === "ResourceNotFoundException") {
+      await lambda.addPermission(addPermissionParams).promise();
+    } else {
+      throw err;
+    }
+  }
 };
 
 export const deleteCloudWatchEventSchedule = async (
@@ -58,7 +84,6 @@ export const deleteCloudWatchEventSchedule = async (
 
   await cw.removeTargets(removeTargetsParams).promise();
 
-  const lambda = new Lambda();
   const removePermissionParams = {
     FunctionName: process.env.MARKET_MONITOR_LAMBDA_FUNCTION_ARN || "",
     StatementId: `MarketMonitor-${discogsUsername}`,

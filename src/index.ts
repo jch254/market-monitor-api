@@ -111,10 +111,6 @@ export async function getMarketDigestHandler(
       event.pathParameters?.id || ""
     );
 
-    if (!userMarketDigest) {
-      throw new ResponseError({ message: "Not found", statusCode: 404 });
-    }
-
     return new Response({ statusCode: 200, body: userMarketDigest });
   } catch (err: any) {
     console.log(err);
@@ -175,10 +171,6 @@ export async function deleteUserMarketDigestHandler(
     const userMarketDigest = await getUserMarketDigestById(
       event.pathParameters?.id || ""
     );
-
-    if (!userMarketDigest) {
-      throw new ResponseError({ message: "Not found", statusCode: 404 });
-    }
 
     await deleteCloudWatchEventSchedule(userMarketDigest.discogsUsername);
     await deleteUserMarketDigest(event.pathParameters?.id || "");
