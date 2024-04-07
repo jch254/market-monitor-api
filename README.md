@@ -14,9 +14,9 @@ Serverless-webpack, serverless-dynamodb-local and serverless-offline offer great
 
 Serverless-dynamodb-local requires Java Runtime Engine (JRE) version 6.x or newer.
 
-**AUTH0_CLIENT_SECRET environment variable must be set before `yarn run dev` command below. Optional DYNAMODB_PORT and DYNAMODB_HOST environment variables may be set to override the defaults (localhost:8000).**
+**VALID_API_TOKENS environment variable must be set before `yarn run dev` command below. Optional DYNAMODB_PORT and DYNAMODB_HOST environment variables may be set to override the defaults (localhost:8000).**
 
-E.g. `AUTH0_CLIENT_SECRET=YOUR_SECRET yarn run dev`
+E.g. `VALID_API_TOKENS=YOUR_COMMA_SEPARATED_TOKENS yarn run dev`
 
 ```
 yarn install (serverless dynamodb install included as postinstall script)
@@ -31,9 +31,9 @@ Maintaining a Java installation for the sake of running DynamoDB locally is a pa
 
 To start the local servers that mimic AWS API Gateway and DyanamoDB using docker, run the commands below.
 
-**AUTH0_CLIENT_SECRET environment variable must be set before `docker-compose up --build` command below.**
+**VALID_API_TOKENS environment variable must be set before `docker-compose up --build` command below.**
 
-E.g. `AUTH0_CLIENT_SECRET=YOUR_SECRET docker-compose up --build`
+E.g. `VALID_API_TOKENS=YOUR_COMMA_SEPARATED_TOKENS docker-compose up --build`
 
 ```
 docker-compose up --build

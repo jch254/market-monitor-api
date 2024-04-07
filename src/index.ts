@@ -5,7 +5,6 @@ import {
   Context,
   CustomAuthorizerEvent,
 } from "aws-lambda";
-import * as jwt from "jsonwebtoken";
 import {
   getUserMarketDigests,
   getUserMarketDigestById,

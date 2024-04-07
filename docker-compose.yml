@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 services:
   dynamodb:
     image: amazon/dynamodb-local
@@ -29,7 +29,7 @@ services:
       timeout: 3s
       retries: 5
     environment:
-      AUTH0_CLIENT_SECRET: ${AUTH0_CLIENT_SECRET}
+      VALID_API_TOKENS: ${VALID_API_TOKENS}
       DYNAMODB_HOST: dynamodb
       DYNAMODB_PORT: 8000
-      DYNAMODB_NO_START: 'true'
+      DYNAMODB_NO_START: "true"

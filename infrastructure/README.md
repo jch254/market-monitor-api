@@ -8,9 +8,9 @@ I've created Docker-powered build/deployment environments for [Serverless projec
 
 To deploy/manage the Serverless service you will need to create an IAM user with the required permissions and set credentials for this user - see [here](https://github.com/serverless/serverless/blob/master/docs/providers/aws/guide/credentials.md) for further info. After you have done this, run the commands below to deploy the service:
 
-**AUTH0_CLIENT_SECRET environment variable must be set before `yarn run deploy` command below.**
+**VALID_API_TOKENS environment variable must be set before `yarn run deploy` command below.**
 
-E.g. `AUTH0_CLIENT_SECRET=YOUR_SECRET yarn run deploy`
+E.g. `VALID_API_TOKENS=YOUR_COMMA_SEPARATED_TOKENS yarn run deploy`
 
 ```
 yarn install
@@ -35,6 +35,7 @@ To deploy to AWS, you must:
 
 1. Update and export all environment variables specified in the appropriate buildspec declaration (check all phases) and bash scripts
 1. Initialise Terraform:
+
 ```
 terraform init \
   -backend-config 'bucket=YOUR_S3_BUCKET' \
@@ -43,6 +44,7 @@ terraform init \
   -get=true \
   -upgrade=true
 ```
+
 1. `terraform plan -out main.tfplan`
 1. `terraform apply main.tfplan`
 
@@ -51,6 +53,7 @@ terraform init \
 1. Update and export all environment variables specified in the appropriate buildspec declaration (check all phases) and bash scripts
 1. Make necessary infrastructure code changes.
 1. Initialise Terraform:
+
 ```
 terraform init \
   -backend-config 'bucket=YOUR_S3_BUCKET' \
@@ -59,6 +62,7 @@ terraform init \
   -get=true \
   -upgrade=true
 ```
+
 1. `terraform plan -out main.tfplan`
 1. `terraform apply main.tfplan`
 
@@ -66,6 +70,7 @@ terraform init \
 
 1. Update and export all environment variables specified in the appropriate buildspec declaration (check all phases) and bash scripts
 1. Initialise Terraform:
+
 ```
 terraform init \
   -backend-config 'bucket=YOUR_S3_BUCKET' \
@@ -74,4 +79,5 @@ terraform init \
   -get=true \
   -upgrade=true
 ```
+
 1. `terraform destroy`
