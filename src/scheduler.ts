@@ -71,18 +71,18 @@ const addLambdaPermission = async (
 export const deleteCloudWatchEventSchedule = async (
   discogsUsername: string
 ) => {
-  const deleteRuleParams = {
-    Name: `MarketMonitor-${discogsUsername}`,
-  };
-
-  await cw.deleteRule(deleteRuleParams).promise();
-
   const removeTargetsParams = {
     Rule: `MarketMonitor-${discogsUsername}`,
     Ids: ["RunMarketMonitorLambda"],
   };
 
   await cw.removeTargets(removeTargetsParams).promise();
+
+  const deleteRuleParams = {
+    Name: `MarketMonitor-${discogsUsername}`,
+  };
+
+  await cw.deleteRule(deleteRuleParams).promise();
 
   const removePermissionParams = {
     FunctionName: process.env.MARKET_MONITOR_LAMBDA_FUNCTION_ARN || "",
