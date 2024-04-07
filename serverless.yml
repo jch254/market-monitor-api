@@ -158,6 +158,8 @@ functions:
   deleteUserMarketDigest:
     handler: src/index.deleteUserMarketDigestHandler
     timeout: 30
+    environment:
+      MARKET_MONITOR_LAMBDA_FUNCTION_ARN: ${env:MARKET_MONITOR_LAMBDA_FUNCTION_ARN}
     events:
       - http:
           method: delete
