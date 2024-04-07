@@ -20,6 +20,8 @@ env:
     MARKET_MONITOR_LAMBDA_FUNCTION_ARN: "arn:aws:lambda:ap-southeast-2:982898479788:function:discogs-market-monitor-prod-handler"
   parameter-store:
     VALID_API_TOKENS: "/market-monitor-api/valid-api-tokens"
+    SENDGRID_API_KEY: "/market-monitor-api/sendgrid-api-key"
+    SENDER_EMAIL: "/market-monitor-api/sender-email"
 
 phases:
   install:

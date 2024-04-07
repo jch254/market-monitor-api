@@ -17,6 +17,7 @@ import {
   createCloudWatchEventSchedule,
   deleteCloudWatchEventSchedule,
 } from "./scheduler";
+import { sendWelcomeEmail } from "./emailClient";
 
 export async function pingHandler(event: APIGatewayEvent, context: Context) {
   console.log("pingoHandler");
@@ -146,6 +147,8 @@ export async function createUserMarketDigestHandler(
       shipsFrom,
       destinationEmail
     );
+
+    await sendWelcomeEmail(destinationEmail, discogsUsername, shipsFrom);
 
     return new Response({ statusCode: 201, body: userMarketDigest });
   } catch (err: any) {

@@ -85,7 +85,7 @@ functions:
     handler: src/index.authorizer
     timeout: 30
     environment:
-      VALID_API_TOKENS: ${env:VALID_API_TOKENS}
+      VALID_API_TOKENS: ${env:VALID_API_TOKENS, ""}
 
   pingo:
     handler: src/index.pingHandler
@@ -129,7 +129,9 @@ functions:
     handler: src/index.createUserMarketDigestHandler
     timeout: 30
     environment:
-      MARKET_MONITOR_LAMBDA_FUNCTION_ARN: ${env:MARKET_MONITOR_LAMBDA_FUNCTION_ARN}
+      MARKET_MONITOR_LAMBDA_FUNCTION_ARN: ${env:MARKET_MONITOR_LAMBDA_FUNCTION_ARN, ""}
+      SENDGRID_API_KEY: ${env:SENDGRID_API_KEY, ""}
+      SENDER_EMAIL: ${env:SENDER_EMAIL, ""}
     events:
       - http:
           method: post
@@ -159,7 +161,7 @@ functions:
     handler: src/index.deleteUserMarketDigestHandler
     timeout: 30
     environment:
-      MARKET_MONITOR_LAMBDA_FUNCTION_ARN: ${env:MARKET_MONITOR_LAMBDA_FUNCTION_ARN}
+      MARKET_MONITOR_LAMBDA_FUNCTION_ARN: ${env:MARKET_MONITOR_LAMBDA_FUNCTION_ARN, ""}
     events:
       - http:
           method: delete

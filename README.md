@@ -8,13 +8,19 @@ API powered by Serverless, TypeScript, Webpack, Node.js and DynamoDB to power th
 
 ## Running locally (with live-reloading and local DynamoDB server)
 
+### Environment variables
+
+- **VALID_API_TOKENS** - Comma separated API auth tokens
+- **SENDGRID_API_KEY** (req) - Auth for SendGrid account
+- **SENDER_EMAIL** (req) - Email address to send from via SendGrid (must be configured via SendGrid)
+
 To run locally you must run two servers - DB and API.
 
 Serverless-webpack, serverless-dynamodb-local and serverless-offline offer great tooling for local Serverless development. To start local servers that mimic AWS API Gateway and DyanamoDB, run the commands below. Both servers will fire up and code will be reloaded upon change so that every request to your API will serve the latest code.
 
 Serverless-dynamodb-local requires Java Runtime Engine (JRE) version 6.x or newer.
 
-**VALID_API_TOKENS environment variable must be set before `yarn run dev` command below. Optional DYNAMODB_PORT and DYNAMODB_HOST environment variables may be set to override the defaults (localhost:8000).**
+**All required environment variables above must be set before `yarn run dev` command below. Optional DYNAMODB_PORT and DYNAMODB_HOST environment variables may be set to override the defaults (localhost:8000).**
 
 E.g. `VALID_API_TOKENS=YOUR_COMMA_SEPARATED_TOKENS yarn run dev`
 
