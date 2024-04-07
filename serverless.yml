@@ -41,6 +41,7 @@ provider:
       Action:
         - events:PutRule
         - events:PutTargets
+        - lambda:AddPermission
       Resource: "*"
 
 package:
