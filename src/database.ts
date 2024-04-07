@@ -54,7 +54,8 @@ export async function createUserMarketDigest(
 ): Promise<UserMarketDigest> {
   const params = {
     TableName: "user-market-digestz",
-    ConditionExpression: "attribute_not_exists(id)",
+    ConditionExpression:
+      "attribute_not_exists(id) AND attribute_not_exists(discogsUsername)",
     Item: {
       id: v4(),
       discogsUsername,

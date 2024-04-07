@@ -135,13 +135,13 @@ export async function createUserMarketDigestHandler(
       event.body as string
     );
 
-    await createCloudWatchEventSchedule(
+    const userMarketDigest = await createUserMarketDigest(
       discogsUsername,
       shipsFrom,
       destinationEmail
     );
 
-    const userMarketDigest = await createUserMarketDigest(
+    await createCloudWatchEventSchedule(
       discogsUsername,
       shipsFrom,
       destinationEmail
