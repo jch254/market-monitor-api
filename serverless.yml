@@ -41,9 +41,9 @@ provider:
       Action:
         - events:PutRule
         - events:PutTargets
-        - lambda:GetPermission
         - lambda:AddPermission
         - lambda:RemovePermission
+        - lambda:GetPolicy
       Resource: "*"
 
 package:
